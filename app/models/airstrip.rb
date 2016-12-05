@@ -1,0 +1,2 @@
+class Airstrip < ApplicationRecord
+end

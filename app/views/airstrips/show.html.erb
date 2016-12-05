@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Start:</strong>
+  <%= @airstrip.start %>
+</p>
+
+<p>
+  <strong>End:</strong>
+  <%= @airstrip.end %>
+</p>
+
+<%= link_to 'Edit', edit_airstrip_path(@airstrip) %> |
+<%= link_to 'Back', airstrips_path %>

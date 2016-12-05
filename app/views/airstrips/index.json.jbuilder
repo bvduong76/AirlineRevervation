@@ -1,0 +1,1 @@
+json.array! @airstrips, partial: 'airstrips/airstrip', as: :airstrip

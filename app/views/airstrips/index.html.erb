@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Airstrips</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Start</th>
+      <th>End</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @airstrips.each do |airstrip| %>
+      <tr>
+        <td><%= airstrip.start %></td>
+        <td><%= airstrip.end %></td>
+        <td><%= link_to 'Show', airstrip %></td>
+        <td><%= link_to 'Edit', edit_airstrip_path(airstrip) %></td>
+        <td><%= link_to 'Destroy', airstrip, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Airstrip', new_airstrip_path %>

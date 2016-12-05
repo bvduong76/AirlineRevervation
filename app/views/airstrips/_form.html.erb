@@ -1,0 +1,27 @@
+<%= form_for(airstrip) do |f| %>
+  <% if airstrip.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(airstrip.errors.count, "error") %> prohibited this airstrip from being saved:</h2>
+
+      <ul>
+      <% airstrip.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :start %>
+    <%= f.number_field :start %>
+  </div>
+
+  <div class="field">
+    <%= f.label :end %>
+    <%= f.number_field :end %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
