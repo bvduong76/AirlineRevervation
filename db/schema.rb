@@ -10,26 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161205160603) do
+ActiveRecord::Schema.define(version: 20161207013450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "airports", force: :cascade do |t|
-    t.string   "code"
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "code"
+    t.string "name"
   end
 
   create_table "airstrips", force: :cascade do |t|
-    t.integer  "start"
-    t.integer  "end"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer "start"
+    t.integer "end"
     t.index ["start", "end"], name: "index_airstrips_on_start_and_end", unique: true, using: :btree
+  end
+
+  create_table "airways", force: :cascade do |t|
+    t.string  "code"
+    t.integer "start"
+    t.integer "end"
+    t.date    "day"
+    t.time    "time"
   end
 
   add_foreign_key "airstrips", "airports", column: "end"
   add_foreign_key "airstrips", "airports", column: "start"
+  add_foreign_key "airways", "airports", column: "end"
+  add_foreign_key "airways", "airports", column: "start"
 end

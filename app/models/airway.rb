@@ -1,0 +1,2 @@
+class Airway < ApplicationRecord
+end

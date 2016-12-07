@@ -3,7 +3,6 @@ class CreateAirports < ActiveRecord::Migration[5.0]
     create_table :airports do |t|
       t.string :code, unique: true
       t.string :name, unique: true
-      t.timestamps
     end
   end
 end

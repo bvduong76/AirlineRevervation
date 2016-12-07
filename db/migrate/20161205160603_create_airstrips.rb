@@ -3,8 +3,6 @@ class CreateAirstrips < ActiveRecord::Migration[5.0]
     create_table :airstrips do |t|
       t.integer :start
       t.integer :end
-
-      t.timestamps
     end
     add_index :airstrips, [:start, :end], unique: true
     add_foreign_key :airstrips, :airports, column: :start, primary_key: "id"
