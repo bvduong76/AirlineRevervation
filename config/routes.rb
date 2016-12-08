@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :flightdetails
   resources :bookings
   resources :flights
   resources :airways

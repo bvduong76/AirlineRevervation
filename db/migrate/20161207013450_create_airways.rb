@@ -1,7 +1,7 @@
 class CreateAirways < ActiveRecord::Migration[5.0]
   def change
     create_table :airways do |t|
-      t.string :code
+      t.string :code, unique: true
       t.integer :start
       t.integer :end
       t.date :day

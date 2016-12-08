@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161208013812) do
+ActiveRecord::Schema.define(version: 20161208023726) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,8 +40,12 @@ ActiveRecord::Schema.define(version: 20161208013812) do
     t.datetime "time"
     t.float    "price"
     t.boolean  "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  end
+
+  create_table "flightdetails", force: :cascade do |t|
+    t.integer "booking"
+    t.integer "flight"
+    t.index ["booking", "flight"], name: "index_flightdetails_on_booking_and_flight", unique: true, using: :btree
   end
 
   create_table "flights", force: :cascade do |t|
@@ -57,5 +61,7 @@ ActiveRecord::Schema.define(version: 20161208013812) do
   add_foreign_key "airstrips", "airports", column: "start"
   add_foreign_key "airways", "airports", column: "end"
   add_foreign_key "airways", "airports", column: "start"
+  add_foreign_key "flightdetails", "bookings", column: "booking"
+  add_foreign_key "flightdetails", "flights", column: "flight"
   add_foreign_key "flights", "airways", column: "way"
 end

@@ -1,0 +1,1 @@
+json.array! @flightdetails, partial: 'flightdetails/flightdetail', as: :flightdetail
