@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161207152510) do
+ActiveRecord::Schema.define(version: 20161208013812) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,15 @@ ActiveRecord::Schema.define(version: 20161207152510) do
     t.date    "day"
     t.time    "time"
     t.index ["start", "end", "day", "time"], name: "index_airways_on_start_and_end_and_day_and_time", unique: true, using: :btree
+  end
+
+  create_table "bookings", force: :cascade do |t|
+    t.string   "code"
+    t.datetime "time"
+    t.float    "price"
+    t.boolean  "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "flights", force: :cascade do |t|
