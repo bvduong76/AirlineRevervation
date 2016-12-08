@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  way: 1
+  grade: MyString
+  pricelevel: MyString
+  slot: 1
+  price: 1.5
+
+two:
+  way: 1
+  grade: MyString
+  pricelevel: MyString
+  slot: 1
+  price: 1.5

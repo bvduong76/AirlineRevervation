@@ -7,6 +7,7 @@ class CreateAirways < ActiveRecord::Migration[5.0]
       t.date :day
       t.time :time
     end
+    add_index :airways, [:start, :end, :day, :time], unique: true
     add_foreign_key :airways, :airports, column: :start, primary_key: "id"
     add_foreign_key :airways, :airports, column: :end, primary_key: "id"
   end
