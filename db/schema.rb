@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161208023726) do
+ActiveRecord::Schema.define(version: 20161208030251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,13 @@ ActiveRecord::Schema.define(version: 20161208023726) do
     t.index ["way", "grade", "pricelevel"], name: "index_flights_on_way_and_grade_and_pricelevel", unique: true, using: :btree
   end
 
+  create_table "passengers", force: :cascade do |t|
+    t.string  "title"
+    t.string  "firstname"
+    t.string  "lastname"
+    t.integer "booking"
+  end
+
   add_foreign_key "airstrips", "airports", column: "end"
   add_foreign_key "airstrips", "airports", column: "start"
   add_foreign_key "airways", "airports", column: "end"
@@ -64,4 +71,5 @@ ActiveRecord::Schema.define(version: 20161208023726) do
   add_foreign_key "flightdetails", "bookings", column: "booking"
   add_foreign_key "flightdetails", "flights", column: "flight"
   add_foreign_key "flights", "airways", column: "way"
+  add_foreign_key "passengers", "bookings", column: "booking"
 end
