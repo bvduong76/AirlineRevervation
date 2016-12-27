@@ -1,31 +1,25 @@
 class AirportsController < ApplicationController
   before_action :set_airport, only: [:show, :edit, :update, :destroy]
-
   # GET /airports
   # GET /airports.json
   def index
-    @airports = Airport.all
+    @airports = Airport.all.order('name ASC')
   end
-
   # GET /airports/1
   # GET /airports/1.json
   def show
   end
-
   # GET /airports/new
   def new
     @airport = Airport.new
   end
-
   # GET /airports/1/edit
   def edit
   end
-
   # POST /airports
   # POST /airports.json
   def create
     @airport = Airport.new(airport_params)
-
     respond_to do |format|
       if @airport.save
         format.html { redirect_to @airport, notice: 'Airport was successfully created.' }
@@ -36,7 +30,6 @@ class AirportsController < ApplicationController
       end
     end
   end
-
   # PATCH/PUT /airports/1
   # PATCH/PUT /airports/1.json
   def update
@@ -50,7 +43,6 @@ class AirportsController < ApplicationController
       end
     end
   end
-
   # DELETE /airports/1
   # DELETE /airports/1.json
   def destroy
@@ -60,13 +52,11 @@ class AirportsController < ApplicationController
       format.json { head :no_content }
     end
   end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_airport
       @airport = Airport.find(params[:id])
     end
-
     # Never trust parameters from the scary internet, only allow the white list through.
     def airport_params
       params.require(:airport).permit(:code, :name)

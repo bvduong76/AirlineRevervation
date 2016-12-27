@@ -2,12 +2,12 @@
 
 <p>
   <strong>Start:</strong>
-  <%= @airstrip.start %>
+  <%= Airport.find(@airstrip.start).name %>
 </p>
 
 <p>
   <strong>End:</strong>
-  <%= @airstrip.end %>
+  <%= Airport.find(@airstrip.end).name %>
 </p>
 
 <%= link_to 'Edit', edit_airstrip_path(@airstrip) %> |

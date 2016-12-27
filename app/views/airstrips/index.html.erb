@@ -14,8 +14,8 @@
   <tbody>
     <% @airstrips.each do |airstrip| %>
       <tr>
-        <td><%= airstrip.start %></td>
-        <td><%= airstrip.end %></td>
+        <td><%= Airport.find(airstrip.start).code %></td>
+        <td><%= Airport.find(airstrip.end).code %></td>
         <td><%= link_to 'Show', airstrip %></td>
         <td><%= link_to 'Edit', edit_airstrip_path(airstrip) %></td>
         <td><%= link_to 'Destroy', airstrip, method: :delete, data: { confirm: 'Are you sure?' } %></td>

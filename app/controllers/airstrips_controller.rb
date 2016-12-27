@@ -1,17 +1,14 @@
 class AirstripsController < ApplicationController
   before_action :set_airstrip, only: [:show, :edit, :update, :destroy]
-
   # GET /airstrips
   # GET /airstrips.json
   def index
-    @airstrips = Airstrip.all
+    @airstrips = Airstrip.all.order('start ASC')
   end
-
   # GET /airstrips/1
   # GET /airstrips/1.json
   def show
   end
-
   # GET /airstrips/new
   def new
     @airstrip = Airstrip.new
@@ -36,7 +33,6 @@ class AirstripsController < ApplicationController
       end
     end
   end
-
   # PATCH/PUT /airstrips/1
   # PATCH/PUT /airstrips/1.json
   def update

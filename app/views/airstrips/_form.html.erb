@@ -11,15 +11,15 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :start %>
-    <%= f.number_field :start %>
-  </div>
+    <div class="field">
+      <%= f.label :start %>
+      <%= collection_select( :airstrip, :start , Airport.all , :id, :name, {:prompt => true, :multiple=>true } ) %>
+    </div>
 
-  <div class="field">
-    <%= f.label :end %>
-    <%= f.number_field :end %>
-  </div>
+    <div class="field">
+      <%= f.label :sanbayden %>
+      <%= collection_select( :airstrip, :end , Airport.all , :id, :name, {:prompt => true, :multiple=>true } ) %>
+    </div>
 
   <div class="actions">
     <%= f.submit %>
