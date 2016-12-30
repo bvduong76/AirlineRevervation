@@ -4,6 +4,17 @@ class AirstripsController < ApplicationController
   # GET /airstrips.json
   def index
     @airstrips = Airstrip.all.order('start ASC')
+    if @tempstart = params[:start]
+      puts @tempstart
+      @ends = @airstrips.where(start: @tempstart)
+      puts @ends
+      render json: @ends
+    else
+      respond_to do |format|
+        format.html # show.html.erb
+        format.json { render json: @airstrips}
+      end
+    end
   end
   # GET /airstrips/1
   # GET /airstrips/1.json

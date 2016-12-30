@@ -13,18 +13,40 @@
 
   <div class="field">
     <%= f.label :code %>
-    <%= f.text_field :code %>
+    <%= f.text_field :code, placeholder: "VNxxx" %>
   </div>
 
   <div class="field">
     <%= f.label :start %>
-    <%= f.number_field :start %>
+    <%= collection_select(:airway, :start, Airport.all, :id, :name,
+                              option={:prompt => 'Select Airport', :multiple => true}, {:id => 'start'})%>
   </div>
 
   <div class="field">
     <%= f.label :end %>
-    <%= f.number_field :end %>
+    <%= collection_select(:airway, :end, Airport.all, :id, :name, options={:prompt => 'Select Airport', :multiple => true}, {:id => 'end'}) %>
   </div>
+
+    </div>
+    <script>
+      $('#start').on('change', function () {
+        var url = '/airstrips?start=' + $(this).val();
+        $("#end").empty();
+        $.get(url, function (data) {
+          $.each(data, function (key, val) {
+            $.getJSON('/airports/' + val.end, function (data1) {
+              console.log(data1);
+              console.log("===");
+              console.log(data1.name);
+              $('#end').append($('<option>', {
+                value: val.end,
+                text: data1.name
+              }));
+            });
+          });
+        });
+      });
+    </script>
 
   <div class="field">
     <%= f.label :day %>

@@ -18,8 +18,8 @@
     <% @airways.each do |airway| %>
       <tr>
         <td><%= airway.code %></td>
-        <td><%= airway.start %></td>
-        <td><%= airway.end %></td>
+        <td><%= Airport.find(airway.start).code %></td>
+        <td><%= Airport.find(airway.end).code %></td>
         <td><%= airway.day %></td>
         <td><%= airway.time %></td>
         <td><%= link_to 'Show', airway %></td>
