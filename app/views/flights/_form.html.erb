@@ -11,30 +11,47 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :way %>
-    <%= f.number_field :way %>
-  </div>
+    <div class="field">
+      <%= f.label :way %>
+      <%= collection_select(:flight, :way, Airway.all, :id, :code,
+                            option={:prompt => 'Select Airway', :multiple => true})%>
+    </div>
+
 
   <div class="field">
     <%= f.label :grade %>
-    <%= f.text_field :grade %>
+    <%= f.select :grade, options_for_select([["Phổ thông", "Y"],["Thương gia", "C"] ])%>
   </div>
 
   <div class="field">
     <%= f.label :pricelevel %>
-    <%= f.text_field :pricelevel %>
+    <%= f.number_field :pricelevel , option={:id => 'pricelevel'}%>
   </div>
 
   <div class="field">
     <%= f.label :slot %>
-    <%= f.number_field :slot %>
+    <%= f.number_field :slot , option={:id => 'slot'}%>
   </div>
 
   <div class="field">
     <%= f.label :price %>
-    <%= f.text_field :price %>
+    <%= f.number_field :price, option={:id => 'price'} %>
   </div>
+
+    <script>
+      $('#slot').on('change', function () {
+        var res = $('#pricelevel').val()* $('#slot').val();
+        $("#price").empty();
+        $('#price').val(res);
+      });
+    </script>
+    <script>
+      $('#pricelevel').on('change', function () {
+        var res = $('#pricelevel').val()* $('#slot').val();
+        $("#price").empty();
+        $('#price').val(res);
+      });
+    </script>
 
   <div class="actions">
     <%= f.submit %>
