@@ -1,22 +1,24 @@
 <%= form_for(flight) do |f| %>
-  <% if flight.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(flight.errors.count, "error") %> prohibited this flight from being saved:</h2>
+    <% if flight.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(flight.errors.count, "error") %> prohibited this flight from being saved:</h2>
 
-      <ul>
-      <% flight.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+          <ul>
+            <% flight.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
 
     <div class="field">
       <%= f.label :way %>
       <%= collection_select(:flight, :way, Airway.all, :id, :code,
-                            option={:prompt => 'Select Airway', :multiple => true}, {:id => 'cbbairway'})%>
+                            option={:prompt => 'Select Airway', :multiple => true}, {:id => 'cbbairway'}) %>
     </div>
+    <div id="airwayinfo">
 
+    </div>
     <script>
       $(document).ready(function () {
         $('#airwayinfo').hide();
@@ -41,43 +43,44 @@
         });
       });
     </script>
-  <div class="field">
-    <%= f.label :grade %>
-    <%= f.select :grade, options_for_select([["Phổ thông", "Y"],["Thương gia", "C"] ])%>
-  </div>
+    <div class="field">
+      <%= f.label :grade %>
+      <%= f.select :grade, options_for_select([["Phổ thông", "Y"], ["Thương gia", "C"]]) %>
+    </div>
 
-  <div class="field">
-    <%= f.label :pricelevel %>
-    <%= f.text_field :pricelevel%>
-  </div>
+    <div class="field">
+      <%= f.label :pricelevel %>
+      <%= f.text_field :pricelevel %>
+    </div>
 
-  <div class="field">
-    <%= f.label :slot %>
-    <%= f.number_field :slot%>
-  </div>
+    <div class="field">
+      <%= f.label :slot %>
+      <%= f.number_field :slot %>
+    </div>
 
-  <div class="field">
-    <%= f.label :price %>
-    <%= f.text_field :price %>
-  </div>
+    <div class="field">
+      <%= f.label :price %>
+      <%= f.text_field :price %>
+    </div>
 
     <!--&lt;!&ndash;<script>-->
-      <!--$('#slot').on('change', function () {-->
-        <!--var res = $('#pricelevel').val()* $('#slot').val();-->
-        <!--$("#price").empty();-->
-        <!--$('#price').val(res);-->
-      <!--});-->
+    <!--$('#slot').on('change', function () {-->
+    <!--var res = $('#pricelevel').val()* $('#slot').val();-->
+    <!--$("#price").empty();-->
+    <!--$('#price').val(res);-->
+    <!--});-->
     <!--</script>-->
     <!--<script>-->
-      <!--$('#pricelevel').on('change', function () {-->
-        <!--var res = $('#pricelevel').val()* $('#slot').val();-->
-        <!--$("#price").empty();-->
-        <!--$('#price').val(res);-->
-      <!--});-->
+    <!--$('#pricelevel').on('change', function () {-->
+    <!--var res = $('#pricelevel').val()* $('#slot').val();-->
+    <!--$("#price").empty();-->
+    <!--$('#price').val(res);-->
+    <!--});-->
     <!--</script>&ndash;&gt;-->
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-    <div id="airwayinfo"/>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+
+
 <% end %>

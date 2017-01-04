@@ -5,7 +5,11 @@
 <table>
   <thead>
     <tr>
-      <th>Way</th>
+      <th>Code</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Day</th>
+      <th>Time</th>
       <th>Grade</th>
       <th>Pricelevel</th>
       <th>Slot</th>
@@ -17,7 +21,11 @@
   <tbody>
     <% @flights.each do |flight| %>
       <tr>
-        <td><%= flight.way %></td>
+        <td><%= Airway.find(flight.way).code%></td>
+        <td><%= Airway.find(flight.way).start%></td>
+        <td><%= Airway.find(flight.way).end%></td>
+        <td><%= Airway.find(flight.way).day%></td>
+        <td><%= Airway.find(flight.way).time%></td>
         <td><%= flight.grade %></td>
         <td><%= flight.pricelevel %></td>
         <td><%= flight.slot %></td>

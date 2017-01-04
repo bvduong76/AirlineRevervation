@@ -1,3 +1,3 @@
 class Flight < ApplicationRecord
-  validates :code, :pricelevel, :grade, :slot, :price , presence: true
+  validates :way, :pricelevel, :grade, :slot, :price , presence: true
 end
