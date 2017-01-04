@@ -14,10 +14,33 @@
     <div class="field">
       <%= f.label :way %>
       <%= collection_select(:flight, :way, Airway.all, :id, :code,
-                            option={:prompt => 'Select Airway', :multiple => true})%>
+                            option={:prompt => 'Select Airway', :multiple => true}, {:id => 'cbbairway'})%>
     </div>
 
+    <script>
+      $(document).ready(function () {
+        $('#airwayinfo').hide();
+      });
+      $('#cbbairway').on('change', function () {
+        $('#airwayinfo').show().slow;
+        var str1 = '';
+        var url = '/airways?code=' + $(this).val();
+        $.get(url, function (data) {
+          $.each(data, function (key, val) {
+            $.getJSON('/airports/' + val.start, function (data1) {
+              str1 = '<label>Start</label><input value="' + data1.name + '"disabled>';
+              $.getJSON('/airports/' + val.end, function (data2) {
+                str1 += '<label>End</label><input value="' + data2.name + '"disabled>';
+                str1 += '<label>Day</label><input value="' + val.day + '"disabled>'
+                    + '<label>Time</label><input value="' + val.time + '"disabled>';
+                $('#airwayinfo').html(str1);
+              });
+            });
 
+          })
+        });
+      });
+    </script>
   <div class="field">
     <%= f.label :grade %>
     <%= f.select :grade, options_for_select([["Phổ thông", "Y"],["Thương gia", "C"] ])%>
@@ -25,35 +48,36 @@
 
   <div class="field">
     <%= f.label :pricelevel %>
-    <%= f.number_field :pricelevel , option={:id => 'pricelevel'}%>
+    <%= f.text_field :pricelevel%>
   </div>
 
   <div class="field">
     <%= f.label :slot %>
-    <%= f.number_field :slot , option={:id => 'slot'}%>
+    <%= f.number_field :slot%>
   </div>
 
   <div class="field">
     <%= f.label :price %>
-    <%= f.number_field :price, option={:id => 'price'} %>
+    <%= f.text_field :price %>
   </div>
 
-    <script>
-      $('#slot').on('change', function () {
-        var res = $('#pricelevel').val()* $('#slot').val();
-        $("#price").empty();
-        $('#price').val(res);
-      });
-    </script>
-    <script>
-      $('#pricelevel').on('change', function () {
-        var res = $('#pricelevel').val()* $('#slot').val();
-        $("#price").empty();
-        $('#price').val(res);
-      });
-    </script>
+    <!--&lt;!&ndash;<script>-->
+      <!--$('#slot').on('change', function () {-->
+        <!--var res = $('#pricelevel').val()* $('#slot').val();-->
+        <!--$("#price").empty();-->
+        <!--$('#price').val(res);-->
+      <!--});-->
+    <!--</script>-->
+    <!--<script>-->
+      <!--$('#pricelevel').on('change', function () {-->
+        <!--var res = $('#pricelevel').val()* $('#slot').val();-->
+        <!--$("#price").empty();-->
+        <!--$('#price').val(res);-->
+      <!--});-->
+    <!--</script>&ndash;&gt;-->
 
   <div class="actions">
     <%= f.submit %>
   </div>
+    <div id="airwayinfo"/>
 <% end %>

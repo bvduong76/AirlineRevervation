@@ -5,6 +5,10 @@ class AirwaysController < ApplicationController
   # GET /airways.json
   def index
     @airways = Airway.all
+    if @code = params[:code]
+      @info = @airways.where(id: @code)
+      render json: @info
+    end
   end
 
   # GET /airways/1
