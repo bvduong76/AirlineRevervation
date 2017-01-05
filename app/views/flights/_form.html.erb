@@ -50,33 +50,31 @@
 
     <div class="field">
       <%= f.label :pricelevel %>
-      <%= f.text_field :pricelevel %>
+      <%= collection_select(:flight, :pricelevel, Pricelevel.all, :id, :name,
+                            option={:prompt => 'Select', :multiple => true}, {:id => 'cbbpricelevel'}) %>
     </div>
-
+    <div >
+      Price:<br/>
+      <input type="text" id="price" disabled>
+    </div>
+    <script>
+      $('#cbbpricelevel').on('change', function () {
+        var url = '/pricelevels?name=' + $(this).val();
+        console.log(url);
+        $.getJSON(url, function (data) {
+          $.each(data, function (key, val) {
+            console.log(val.price);
+            $('#price').val(val.price);
+          });
+        });
+      });
+    </script>
     <div class="field">
       <%= f.label :slot %>
       <%= f.number_field :slot %>
     </div>
 
-    <div class="field">
-      <%= f.label :price %>
-      <%= f.text_field :price %>
-    </div>
 
-    <!--&lt;!&ndash;<script>-->
-    <!--$('#slot').on('change', function () {-->
-    <!--var res = $('#pricelevel').val()* $('#slot').val();-->
-    <!--$("#price").empty();-->
-    <!--$('#price').val(res);-->
-    <!--});-->
-    <!--</script>-->
-    <!--<script>-->
-    <!--$('#pricelevel').on('change', function () {-->
-    <!--var res = $('#pricelevel').val()* $('#slot').val();-->
-    <!--$("#price").empty();-->
-    <!--$('#price').val(res);-->
-    <!--});-->
-    <!--</script>&ndash;&gt;-->
 
     <div class="actions">
       <%= f.submit %>

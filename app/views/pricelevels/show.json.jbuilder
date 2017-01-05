@@ -1,0 +1,1 @@
+json.partial! "pricelevels/pricelevel", pricelevel: @pricelevel

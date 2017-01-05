@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161208030251) do
+ActiveRecord::Schema.define(version: 20170105143629) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,10 +51,9 @@ ActiveRecord::Schema.define(version: 20161208030251) do
   create_table "flights", force: :cascade do |t|
     t.integer "way"
     t.string  "grade"
-    t.string  "pricelevel"
+    t.integer "pricelevel"
     t.integer "slot"
-    t.float   "price"
-    t.index ["way", "grade", "pricelevel"], name: "index_flights_on_way_and_grade_and_pricelevel", unique: true, using: :btree
+    t.index ["way", "pricelevel"], name: "index_flights_on_way_and_pricelevel", unique: true, using: :btree
   end
 
   create_table "passengers", force: :cascade do |t|
@@ -64,6 +63,11 @@ ActiveRecord::Schema.define(version: 20161208030251) do
     t.integer "booking"
   end
 
+  create_table "pricelevels", force: :cascade do |t|
+    t.string "name"
+    t.float  "price"
+  end
+
   add_foreign_key "airstrips", "airports", column: "end"
   add_foreign_key "airstrips", "airports", column: "start"
   add_foreign_key "airways", "airports", column: "end"
@@ -71,5 +75,6 @@ ActiveRecord::Schema.define(version: 20161208030251) do
   add_foreign_key "flightdetails", "bookings", column: "booking"
   add_foreign_key "flightdetails", "flights", column: "flight"
   add_foreign_key "flights", "airways", column: "way"
+  add_foreign_key "flights", "pricelevels", column: "pricelevel"
   add_foreign_key "passengers", "bookings", column: "booking"
 end

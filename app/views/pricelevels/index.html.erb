@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Pricelevels</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Price</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @pricelevels.each do |pricelevel| %>
+      <tr>
+        <td><%= pricelevel.name %></td>
+        <td><%= pricelevel.price.round(0) %></td>
+        <td><%= link_to 'Show', pricelevel %></td>
+        <td><%= link_to 'Edit', edit_pricelevel_path(pricelevel) %></td>
+        <td><%= link_to 'Destroy', pricelevel, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Pricelevel', new_pricelevel_path %>
