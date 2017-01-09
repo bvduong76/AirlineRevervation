@@ -1,30 +1,110 @@
-<p id="notice"><%= notice %></p>
-<h1>Bookings</h1>
-<table>
-  <thead>
-    <tr>
-      <th>Code</th>
-      <th>Time</th>
-      <th>Price</th>
-      <th>Status</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @bookings.each do |booking| %>
-      <tr>
-        <td><%= booking.code %></td>
-        <td><%= booking.time %></td>
-        <td><%= booking.price %></td>
-        <td><%= booking.status %></td>
-        <td><%= link_to 'Show', booking %></td>
-        <td><%= link_to 'Edit', edit_booking_path(booking) %></td>
-        <td><%= link_to 'Destroy', booking, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div id="div1">
+  <h1>Đặt vé</h1>
+  <hr/>
 
-<br>
+  <label>Chọn điểm đi</label>
+  <%= collection_select(:chuyenbay, :di, Airport.all,
+                        :id, :name, options={:prompt => 'Chọn sân bay', :multiple => true},
+                        {:id => 'cbxdiemdi'}) %>
+  <div id="divdiemden">
+    <label>Chọn điểm đến</label>
+    <%= collection_select(:chuyenbay, :den, Airport.all, :id, :name,
+                          options={:prompt => 'Chọn sân bay', :multiple => true},
+                          {:id => 'cbxdiemden'}) %>
+  </div>
+  <label>Ngày</label>
+  <input id="txtdate" type="date" placeholder="yyyy-mm-dd">
+</div>
+<button id="timve">Tìm vé</button>
+<script>
+  $('#cbxdiemdi').on('change', function () {
+    var url = '/airways?start=' + $(this).val();
+    $("#cbxdiemden").empty();
+    $.get(url, function (data) {
+      $.each(data, function (key, val) {
+        $.getJSON('/airports/' + val.sanbayden, function (data1) {
+          $('#cbxdiemden').append($('<option>', {
+            value: val.sanbayden,
+            text: data1.tensanbay
+          }));
+        });
+      });
+    });
+  });
+</script>
+<br/>
 
-<%= link_to 'New Booking', new_booking_path %>
+<hr/>
+</div>
+<div id="div2">
+</div>
+<div id="div3">
+  <br/><label>Nhập ID chuyến bay:</label><input type="number" id="txtDatve"><button id="btnDatve">Đặt vé</button>
+</div>
+<div id="div4">
+  <label>Nhập họ và tên:</label><input type="text" id="txtTen"><button id="btnTen">Ok</button>
+</div>
+<div id="div5">
+  <h1>Đặt vé thành công</h1>
+</div>
+<script>
+  $(document).ready(function () {
+    $('#div3').hide();
+    $('#div4').hide();
+    $('#div5').hide();
+  });
+  $('#timve').click(function () {
+    $('#div4').hide();
+    $('#div5').hide();
+    var diemdi = $("#cbxdiemdi option:selected").text();
+    var diemden = $("#cbxdiemden option:selected").text()
+    var ngaydi = $("#txtdate").val();
+    var soluong = $("#txtsoluong").val();
+    $('#div2').empty();
+    str = '<h1>Danh sách chuyến bay thỏa mãn</h1><table border="1"><thead><th>Ma</th>'
+        + '<th>Sân bay đi</th><th>Sân bay đến</th><th>Ngày</th><th>Giờ</th>'
+        +'<th>Giá</th><th>Số lượng</th><th>__ID__</th></th></thead>';
+    $.getJSON('/chuyenbays?di=' + diemdi + '&den=' + diemden + '&ngaydi=' + ngaydi + '&soluong=' + soluong, function (data) {
+      if (data.length == 0){
+        $('#div2').html('Không có vé');
+        return;
+      }
+      $.each(data, function (key, val) {
+        $.getJSON('/chuyenbays?changbayid='+ val.id, function (data2) {
+          $.each(data2, function (key2, val2) {
+            $.getJSON('chuyenbays?changbay=' + val.id +'&gia='+val2.giaban, function (data3) {
+              console.log(data3);
+              $.each(data3, function (key3, val3) {
+                var timedi =new Date(val.gio);
+                str += '<tr><td>'+val.ma+'</td><td>'+ $('#cbxdiemdi option:selected').text() +'</td><td>'
+                    + $('#cbxdiemden option:selected').text() +'</td><td>'+ val.ngay +'</td><td>'
+                    + timedi.getHours() +':'+timedi.getMinutes()+'</td><td>'+ val2.giaban +'</td><td>'+ val2.soluong
+                    +'</td><td>'+ val3.id +'</td></tr>';
+                if (key2 == data2.length -1 && key == data.length-1)
+                  str += '</table>';
+                $('#div2').html(str);
+              });
+
+            });
+
+          });
+        });
+        $('#div3').show();
+      });
+    });
+  });
+  $("#btnDatve").click(function () {
+    $('#div4').show();
+    $('#div3').hide();
+
+  });
+  $("#btnTen").click(function () {
+    $('#div5').show();
+    $('#div3').hide();
+
+    $('#div4').hide();
+  });
+</script>
+
+
+
