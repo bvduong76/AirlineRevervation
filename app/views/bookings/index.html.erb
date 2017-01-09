@@ -2,30 +2,30 @@
   <h1>Đặt vé</h1>
   <hr/>
 
-  <label>Chọn điểm đi</label>
-  <%= collection_select(:chuyenbay, :di, Airport.all,
-                        :id, :name, options={:prompt => 'Chọn sân bay', :multiple => true},
-                        {:id => 'cbxdiemdi'}) %>
+  <label>Start</label>
+  <%= collection_select(:flight, :start, Airport.all,
+                        :id, :name, options={:prompt => 'Select airport', :multiple => true},
+                        {:id => 'cbxstart'}) %>
   <div id="divdiemden">
-    <label>Chọn điểm đến</label>
-    <%= collection_select(:chuyenbay, :den, Airport.all, :id, :name,
-                          options={:prompt => 'Chọn sân bay', :multiple => true},
-                          {:id => 'cbxdiemden'}) %>
+    <label>End</label>
+    <%= collection_select(:flight, :end, Airport.all, :id, :name,
+                          options={:prompt => 'Select airport', :multiple => true},
+                          {:id => 'cbxend'}) %>
   </div>
-  <label>Ngày</label>
+  <label>Date</label>
   <input id="txtdate" type="date" placeholder="yyyy-mm-dd">
 </div>
-<button id="timve">Tìm vé</button>
+<button id="timve">Search Flights</button>
 <script>
-  $('#cbxdiemdi').on('change', function () {
-    var url = '/airways?start=' + $(this).val();
-    $("#cbxdiemden").empty();
+  $('#cbxstart').on('change', function () {
+    var url = '/airstrips?start=' + $(this).val();
+    $("#cbxend").empty();
     $.get(url, function (data) {
       $.each(data, function (key, val) {
-        $.getJSON('/airports/' + val.sanbayden, function (data1) {
-          $('#cbxdiemden').append($('<option>', {
-            value: val.sanbayden,
-            text: data1.tensanbay
+        $.getJSON('/airports/' + val.end, function (data1) {
+          $('#cbxend').append($('<option>', {
+            value: val.end,
+            text: data1.name
           }));
         });
       });
@@ -39,13 +39,13 @@
 <div id="div2">
 </div>
 <div id="div3">
-  <br/><label>Nhập ID chuyến bay:</label><input type="number" id="txtDatve"><button id="btnDatve">Đặt vé</button>
+  <br/><label>Enter ID Flight:</label><input type="number" id="txtDatve"><button id="btnDatve">Booking</button>
 </div>
 <div id="div4">
-  <label>Nhập họ và tên:</label><input type="text" id="txtTen"><button id="btnTen">Ok</button>
+  <label>Enter your name:</label><input type="text" id="txtTen"><button id="btnTen">Ok</button>
 </div>
 <div id="div5">
-  <h1>Đặt vé thành công</h1>
+  <h1>Booking Ticket Success</h1>
 </div>
 <script>
   $(document).ready(function () {
@@ -56,28 +56,30 @@
   $('#timve').click(function () {
     $('#div4').hide();
     $('#div5').hide();
-    var diemdi = $("#cbxdiemdi option:selected").text();
-    var diemden = $("#cbxdiemden option:selected").text()
-    var ngaydi = $("#txtdate").val();
-    var soluong = $("#txtsoluong").val();
+    var start = $("#cbxstart option:selected").text();
+    var end = $("#cbxend option:selected").text()
+    var date = $("#txtdate").val();
+//    var soluong = $("#txtsoluong").val();
     $('#div2').empty();
     str = '<h1>Danh sách chuyến bay thỏa mãn</h1><table border="1"><thead><th>Ma</th>'
         + '<th>Sân bay đi</th><th>Sân bay đến</th><th>Ngày</th><th>Giờ</th>'
         +'<th>Giá</th><th>Số lượng</th><th>__ID__</th></th></thead>';
-    $.getJSON('/chuyenbays?di=' + diemdi + '&den=' + diemden + '&ngaydi=' + ngaydi + '&soluong=' + soluong, function (data) {
+//    $.getJSON('/flights?start=' + start + '&end=' + end + '&date=' + date + '&slot=' + soluong, function (data) {
+      $.getJSON('/flights?di=' + start + '&den=' + end + '&ngaydi=' + date, function (data) {
+        console.log(data);
       if (data.length == 0){
         $('#div2').html('Không có vé');
         return;
       }
       $.each(data, function (key, val) {
-        $.getJSON('/chuyenbays?changbayid='+ val.id, function (data2) {
+        $.getJSON('/flights?changbayid='+ val.id, function (data2) {
           $.each(data2, function (key2, val2) {
-            $.getJSON('chuyenbays?changbay=' + val.id +'&gia='+val2.giaban, function (data3) {
+            $.getJSON('flights?changbay=' + val.id +'&gia='+val2.giaban, function (data3) {
               console.log(data3);
               $.each(data3, function (key3, val3) {
                 var timedi =new Date(val.gio);
-                str += '<tr><td>'+val.ma+'</td><td>'+ $('#cbxdiemdi option:selected').text() +'</td><td>'
-                    + $('#cbxdiemden option:selected').text() +'</td><td>'+ val.ngay +'</td><td>'
+                str += '<tr><td>'+val.ma+'</td><td>'+ $('#cbxstart option:selected').text() +'</td><td>'
+                    + $('#cbxend option:selected').text() +'</td><td>'+ val.ngay +'</td><td>'
                     + timedi.getHours() +':'+timedi.getMinutes()+'</td><td>'+ val2.giaban +'</td><td>'+ val2.soluong
                     +'</td><td>'+ val3.id +'</td></tr>';
                 if (key2 == data2.length -1 && key == data.length-1)

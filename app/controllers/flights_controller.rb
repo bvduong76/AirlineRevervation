@@ -5,6 +5,22 @@ class FlightsController < ApplicationController
   # GET /flights.json
   def index
     @flights = Flight.all
+
+    if @sbdi = params[:di] and @sbden = params[:den] and @ngaydi = params[:ngaydi]
+
+      @noidiObj = Airport.all.where(name: @sbdi).first
+      @noidenObj = Airport.all.where(name: @sbden).first
+      puts '============'
+      puts @noidiObj.id
+      puts @noidenObj.id
+      puts '============'
+      @temps = Airway.where(start: @noidiObj.id, end: @noidenObj.id, day: @ngaydi)
+      render json: @temps
+    elsif @macb = params[:changbayid]
+      render json: Flight.where(way: @macb)
+    elsif @macb = params[:changbay] and @gia = params[:gia]
+      render json: Flight.where(way: @macb , giaban: @gia)
+    end
   end
 
   # GET /flights/1
