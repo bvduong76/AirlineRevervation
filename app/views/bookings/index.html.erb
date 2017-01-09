@@ -62,33 +62,42 @@
 //    var soluong = $("#txtsoluong").val();
     $('#div2').empty();
     str = '<h1>Danh sách chuyến bay thỏa mãn</h1><table border="1"><thead><th>Ma</th>'
-        + '<th>Sân bay đi</th><th>Sân bay đến</th><th>Ngày</th><th>Giờ</th>'
+        + '<th>Sân bay đi</th><th>Sân bay đến</th><th>Ngày</th><th>Giờ</th><th>Hạng</th>'
         +'<th>Giá</th><th>Số lượng</th><th>__ID__</th></th></thead>';
 //    $.getJSON('/flights?start=' + start + '&end=' + end + '&date=' + date + '&slot=' + soluong, function (data) {
       $.getJSON('/flights?di=' + start + '&den=' + end + '&ngaydi=' + date, function (data) {
-        console.log(data);
+//        console.log(data);
       if (data.length == 0){
         $('#div2').html('Không có vé');
         return;
       }
       $.each(data, function (key, val) {
         $.getJSON('/flights?changbayid='+ val.id, function (data2) {
+//          console.log(data2);
           $.each(data2, function (key2, val2) {
-            $.getJSON('flights?changbay=' + val.id +'&gia='+val2.giaban, function (data3) {
+            $.getJSON('flights?changbay=' + val.id +'&pricelevel='+val2.pricelevel, function (data3) {
               console.log(data3);
               $.each(data3, function (key3, val3) {
-                var timedi =new Date(val.gio);
-                str += '<tr><td>'+val.ma+'</td><td>'+ $('#cbxstart option:selected').text() +'</td><td>'
-                    + $('#cbxend option:selected').text() +'</td><td>'+ val.ngay +'</td><td>'
-                    + timedi.getHours() +':'+timedi.getMinutes()+'</td><td>'+ val2.giaban +'</td><td>'+ val2.soluong
-                    +'</td><td>'+ val3.id +'</td></tr>';
-                if (key2 == data2.length -1 && key == data.length-1)
-                  str += '</table>';
-                $('#div2').html(str);
+                $.getJSON('pricelevels?id=' + val2.pricelevel, function (data4) {
+                  console.log(data4);
+                  $.each(data4, function (key4, val4) {
+                    var temp1;
+                    if (val2.grade == 'Y')
+                      temp1 = "Phổ Thông";
+                    if (val2.grade == 'C')
+                      temp1 = "Thương Gia";
+                        var timedi = new Date(val.time);
+                        str += '<tr><td>' + val.code + '</td><td>' + $('#cbxstart option:selected').text() + '</td><td>'
+                            + $('#cbxend option:selected').text() + '</td><td>' + val.day + '</td><td>'
+                            + timedi.getHours() + ':' + timedi.getMinutes() + '</td><td>' + temp1 + '</td><td>' + val4.price + '</td><td>' + val2.slot
+                            + '</td><td>' + val3.id + '</td></tr>';
+                        if (key2 == data2.length - 1 && key == data.length - 1)
+                          str += '</table>';
+                        $('#div2').html(str);
+                  });
+                });
               });
-
             });
-
           });
         });
         $('#div3').show();

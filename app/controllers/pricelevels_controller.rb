@@ -9,10 +9,10 @@ class PricelevelsController < ApplicationController
       @price = @pricelevels.where(id: @name)
       render json: @price
     end
-    # if @id = params[:id]
-    #   @price = @pricelevels.where(id: @id)
-    #   render json: @price
-    # end
+    if @id = params[:id]
+       @price1 = @pricelevels.where(id: @id)
+       render json: @price1
+     end
   end
 
   # GET /pricelevels/1

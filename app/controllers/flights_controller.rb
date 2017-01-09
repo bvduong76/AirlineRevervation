@@ -18,8 +18,8 @@ class FlightsController < ApplicationController
       render json: @temps
     elsif @macb = params[:changbayid]
       render json: Flight.where(way: @macb)
-    elsif @macb = params[:changbay] and @gia = params[:gia]
-      render json: Flight.where(way: @macb , giaban: @gia)
+    elsif @macb = params[:changbay] and @gia = params[:pricelevel]
+      render json: Flight.where(way: @macb , pricelevel: @gia)
     end
   end
 
